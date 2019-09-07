@@ -1,8 +1,7 @@
 import numpy as np
 import os
 import time
-import torch    
-    
+import torch
 
 
 def sumproducts(x, y):
@@ -22,8 +21,6 @@ def sumproducts(x, y):
     return result
 
 
-
-
 def vectorize_sumproducts(x, y):
     """
     x is a 1-dimensional int numpy array. Shape of x is (N, ).
@@ -35,7 +32,7 @@ def vectorize_sumproducts(x, y):
 
     """
     # Write the vecotrized version here
-    pass
+    return np.sum(np.outer(x, y))
 
 
 def Relu(x):
@@ -51,6 +48,7 @@ def Relu(x):
                 result[i][j] = 0
     return result
 
+
 def vectorize_Relu(x):
     """
     x is a 2-dimensional int numpy array.
@@ -58,7 +56,7 @@ def vectorize_Relu(x):
 
     """
     # Write the vecotrized version here
-    pass
+    np.vectorize(lambda x: x if x > 0 else 0)(x)
 
 
 def ReluPrime(x):
@@ -84,7 +82,7 @@ def vectorize_PrimeRelu(x):
 
     """
     # Write the vecotrized version here
-    pass  
+    return np.vectorize(lambda x: 1 if x > 0 else 0)(x)
 
 
 def slice_fixed_point(x, l, start_point):
@@ -97,7 +95,17 @@ def slice_fixed_point(x, l, start_point):
     Return a 3-dimensional int numpy array of shape (n, l, -1)
 
     """
-    pass
+
+    dim1 = x.shape[0]
+    dim2 = l-start_point
+    dim3 = x[0].shape[1]
+
+    result = np.zeros((dim1, dim2, dim3))
+
+    for i in range(dim1):
+        result[i] = x[i][start_point:l]
+
+    return result
 
 
 def slice_last_point(x, l):
@@ -109,7 +117,14 @@ def slice_last_point(x, l):
     Return a 3-dimensional int numpy array of shape (n, l, -1)
 
     """
-    pass
+    dim1 = x.shape[0]
+    dim2 = l
+    dim3 = x[0].shape[1]
+
+    result = np.zeros((dim1, dim2, dim3))
+
+    for i in range(dim1):
+        result[i] = x[i][-l:]
 
 
 def slice_random_point(x, l):
@@ -134,7 +149,6 @@ def pad_pattern_end(x):
 
     """
     pass
-    
 
 
 def pad_constant_central(x, c_):
@@ -149,7 +163,6 @@ def pad_constant_central(x, c_):
     pass
 
 
-
 def numpy2tensor(x):
     """
     x is an numpy nd-array. 
@@ -157,6 +170,7 @@ def numpy2tensor(x):
     Return a pytorch Tensor of the same shape containing the same data.
     """
     pass
+
 
 def tensor2numpy(x):
     """
@@ -166,7 +180,8 @@ def tensor2numpy(x):
     """
     pass
 
-def tensor_sumproducts(x,y):
+
+def tensor_sumproducts(x, y):
     """
     x is an n-dimensional pytorch Tensor.
     y is an n-dimensional pytorch Tensor.
@@ -174,6 +189,7 @@ def tensor_sumproducts(x,y):
     Return the sum of the element-wise product of the two tensors.
     """
     pass
+
 
 def tensor_ReLU(x):
     """
@@ -183,7 +199,8 @@ def tensor_ReLU(x):
 
     Return a pytorch Tensor of the same shape as x containing RELU(x)
     """
-    pass        
+    pass
+
 
 def tensor_ReLU_prime(x):
     """
