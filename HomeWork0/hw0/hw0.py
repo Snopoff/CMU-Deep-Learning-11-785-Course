@@ -32,7 +32,8 @@ def vectorize_sumproducts(x, y):
 
     """
     # Write the vecotrized version here
-    return np.sum(np.outer(x, y))
+    # return np.sum(np.outer(x, y))
+    return np.vectorize(sumproducts)(x, y)
 
 
 def Relu(x):
@@ -56,7 +57,8 @@ def vectorize_Relu(x):
 
     """
     # Write the vecotrized version here
-    np.vectorize(lambda x: x if x > 0 else 0)(x)
+    # return np.vectorize(lambda x: x if x > 0 else 0)(x)
+    return np.vectorize(Relu)(x)
 
 
 def ReluPrime(x):
@@ -82,7 +84,8 @@ def vectorize_PrimeRelu(x):
 
     """
     # Write the vecotrized version here
-    return np.vectorize(lambda x: 1 if x > 0 else 0)(x)
+    # return np.vectorize(lambda x: 1 if x > 0 else 0)(x)
+    return np.vectorize(ReluPrime)(x)
 
 
 def slice_fixed_point(x, l, start_point):
