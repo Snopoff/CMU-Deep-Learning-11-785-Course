@@ -187,7 +187,18 @@ def pad_constant_central(x, c_):
     Return a 3-dimensional int numpy array.
 
     """
-    pass
+    dim1 = x.shape[0]
+    dim2 = max([utter.shape[0] for utter in x])
+    dim3 = x[0].shape[1]
+
+    result = np.zeros((dim1, dim2, dim3))
+
+    for i in range(dim1):
+        d = len(x[i])
+        result[i] = np.pad(x[i], pad_width=(
+            (int((dim2-d)/2), dim2-d-int((dim2-d)/2)), (0, 0)), mode='constant')
+
+    return result
 
 
 def numpy2tensor(x):
@@ -196,7 +207,7 @@ def numpy2tensor(x):
 
     Return a pytorch Tensor of the same shape containing the same data.
     """
-    pass
+    return torch.from_numpy(x)
 
 
 def tensor2numpy(x):
@@ -205,7 +216,7 @@ def tensor2numpy(x):
 
     Return a numpy nd-array of the same shape containing the same data.
     """
-    pass
+    return x.numpy()
 
 
 def tensor_sumproducts(x, y):
@@ -215,7 +226,7 @@ def tensor_sumproducts(x, y):
 
     Return the sum of the element-wise product of the two tensors.
     """
-    pass
+    return torch.sum(torch.ger(x, y))
 
 
 def tensor_ReLU(x):
@@ -226,7 +237,7 @@ def tensor_ReLU(x):
 
     Return a pytorch Tensor of the same shape as x containing RELU(x)
     """
-    pass
+    return torch.numpy(np.vectorize(lambda x: x if x > 0 else 0)(x.numpy()))
 
 
 def tensor_ReLU_prime(x):
@@ -237,4 +248,4 @@ def tensor_ReLU_prime(x):
 
     Return a pytorch Tensor of the same shape as x containing RELU_PRIME(x)
     """
-    pass
+    return torch.numpy(np.vectorize(lambda x: 1 if x > 0 else 0)(x.numpy()))
