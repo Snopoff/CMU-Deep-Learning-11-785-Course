@@ -127,7 +127,9 @@ def slice_last_point(x, l):
     result = np.zeros((dim1, dim2, dim3))
 
     for i in range(dim1):
-        result[i] = x[i][-l:]
+        result[i] = x[i][-dim2:]
+
+    return result
 
 
 def slice_random_point(x, l):
@@ -139,7 +141,17 @@ def slice_random_point(x, l):
     Return a 3-dimensional int numpy array of shape (n, l, -1)
 
     """
-    pass
+    dim1 = x.shape[0]
+    dim2 = l
+    dim3 = x[0].shape[1]
+
+    result = np.zeros((dim1, dim2, dim3))
+
+    s = np.random.randint(x[0].shape[0]-dim2)
+    for i in range(dim1):
+        result[i] = x[i][s:s+dim2]
+
+    return result
 
 
 def pad_pattern_end(x):
@@ -151,7 +163,19 @@ def pad_pattern_end(x):
     Return a 3-dimensional int numpy array.
 
     """
-    pass
+    dim1 = x.shape[0]
+    dim2 = max([utter.shape[0] for utter in x])
+    dim3 = x[0].shape[1]
+
+    result = np.zeros((dim1, dim2, dim3))
+
+    modes = ['edge', 'symmetric']
+    for i in range(dim1):
+        d = len(x[i])
+        result[i] = np.pad(x[i], pad_width=(
+            (0, dim2-d), (0, 0)), mode=modes[i % len(modes)])
+
+    return result
 
 
 def pad_constant_central(x, c_):
