@@ -1,5 +1,4 @@
 __init__*
 .vscode/
 .ipynb_checkpoints/
-._.DS_Store*
-images/
+*.DS_Store*
