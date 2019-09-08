@@ -32,8 +32,7 @@ def vectorize_sumproducts(x, y):
 
     """
     # Write the vecotrized version here
-    # return np.sum(np.outer(x, y))
-    return np.vectorize(sumproducts)(x, y)
+    return np.sum(np.outer(x, y))
 
 
 def Relu(x):
@@ -57,8 +56,7 @@ def vectorize_Relu(x):
 
     """
     # Write the vecotrized version here
-    # return np.vectorize(lambda x: x if x > 0 else 0)(x)
-    return np.vectorize(Relu)(x)
+    return np.maximum(x, 0)
 
 
 def ReluPrime(x):
@@ -84,8 +82,7 @@ def vectorize_PrimeRelu(x):
 
     """
     # Write the vecotrized version here
-    # return np.vectorize(lambda x: 1 if x > 0 else 0)(x)
-    return np.vectorize(ReluPrime)(x)
+    return np.where(x < 0, 0, 1)
 
 
 def slice_fixed_point(x, l, start_point):
@@ -106,7 +103,7 @@ def slice_fixed_point(x, l, start_point):
     result = np.zeros((dim1, dim2, dim3))
 
     for i in range(dim1):
-        result[i] = x[i][start_point:l]
+        result[i] = x[i][start_point:start_point+l]
 
     return result
 
@@ -203,7 +200,7 @@ def pad_constant_central(x, c_):
 
 def numpy2tensor(x):
     """
-    x is an numpy nd-array. 
+    x is an numpy nd-array.
 
     Return a pytorch Tensor of the same shape containing the same data.
     """
@@ -212,7 +209,7 @@ def numpy2tensor(x):
 
 def tensor2numpy(x):
     """
-    x is a pytorch Tensor. 
+    x is a pytorch Tensor.
 
     Return a numpy nd-array of the same shape containing the same data.
     """
@@ -231,21 +228,21 @@ def tensor_sumproducts(x, y):
 
 def tensor_ReLU(x):
     """
-    x is a pytorch Tensor. 
-    For every element i in x, apply the ReLU function: 
+    x is a pytorch Tensor.
+    For every element i in x, apply the ReLU function:
     RELU(i) = 0 if i < 0 else i
 
     Return a pytorch Tensor of the same shape as x containing RELU(x)
     """
-    return torch.numpy(np.vectorize(lambda x: x if x > 0 else 0)(x.numpy()))
+    return torch.max(x, torch.zeros_like(x))
 
 
 def tensor_ReLU_prime(x):
     """
-    x is a pytorch Tensor. 
-    For every element i in x, apply the RELU_PRIME function: 
+    x is a pytorch Tensor.
+    For every element i in x, apply the RELU_PRIME function:
     RELU_PRIME(i) = 0 if i < 0 else 1
 
     Return a pytorch Tensor of the same shape as x containing RELU_PRIME(x)
     """
-    return torch.numpy(np.vectorize(lambda x: 1 if x > 0 else 0)(x.numpy()))
+    return torch.where(x < 0, torch.zeros_like(x), torch.ones_like(x))
