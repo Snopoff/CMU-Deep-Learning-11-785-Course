@@ -100,10 +100,7 @@ def slice_fixed_point(x, l, start_point):
     dim2 = l-start_point
     dim3 = x[0].shape[1]
 
-    result = np.zeros((dim1, dim2, dim3))
-
-    for i in range(dim1):
-        result[i] = x[i][start_point:start_point+l]
+    result = np.array([record[start_point:start_point+l] for record in x])
 
     return result
 
@@ -144,9 +141,12 @@ def slice_random_point(x, l):
 
     result = np.zeros((dim1, dim2, dim3))
 
+    np.random.seed(0)
+
     s = np.random.randint(x[0].shape[0]-dim2)
-    for i in range(dim1):
-        result[i] = x[i][s:s+dim2]
+    # for i in range(dim1):
+    #    result[i] = x[i][s:s+dim2]
+    result = np.array([record[s:s+l] for record in x])
 
     return result
 
@@ -223,7 +223,7 @@ def tensor_sumproducts(x, y):
 
     Return the sum of the element-wise product of the two tensors.
     """
-    return torch.sum(torch.ger(x, y))
+    return torch.sum(torch.mul(x, y))
 
 
 def tensor_ReLU(x):
