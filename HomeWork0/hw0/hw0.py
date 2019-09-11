@@ -135,18 +135,16 @@ def slice_random_point(x, l):
     Return a 3-dimensional int numpy array of shape (n, l, -1)
 
     """
+
     dim1 = x.shape[0]
     dim2 = l
     dim3 = x[0].shape[1]
 
-    result = np.zeros((dim1, dim2, dim3))
+    offset = [np.random.randint(utter.shape[0]-dim2+1)
+              if utter.shape[0]-dim2 > 0 else 0
+              for utter in x]
 
-    np.random.seed(0)
-
-    s = np.random.randint(x[0].shape[0]-dim2)
-    # for i in range(dim1):
-    #    result[i] = x[i][s:s+dim2]
-    result = np.array([record[s:s+l] for record in x])
+    result = np.array([x[i][offset[i]:offset[i]+dim2] for i in range(dim1)])
 
     return result
 
